@@ -1,4 +1,5 @@
 {
+ {
   "name": "x-auto-reply",
   "version": "1.0.0",
   "main": "index.js",
@@ -8,6 +9,6 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "puppeteer": "^21.3.8"
+    "puppeteer-core": "^21.3.8"
   }
 }
