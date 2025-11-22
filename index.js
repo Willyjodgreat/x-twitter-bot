@@ -1,5 +1,6 @@
 import express from 'express';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import { executablePath } from 'puppeteer';
 
 const app = express();
 app.use(express.json());
@@ -10,27 +11,18 @@ app.post('/reply', async (req, res) => {
 
   const browser = await puppeteer.launch({
     headless: true,
+    executablePath: executablePath(), // uses system Chrome
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
   const page = await browser.newPage();
 
   try {
-    // LOGIN TO TWITTER
-    await page.goto('https://twitter.com/login', { waitUntil: 'networkidle2' });
+    await page.goto('https://twitter.com/login');
 
-    await page.type('input[name="text"]', process.env.TWITTER_USERNAME || 'web3chaos969');
-    await page.click('div[role="button"]');
-    await page.waitForTimeout(1000);
+    // 🔐 Add your login automation here (or use cookies/session)
 
-    await page.type('input[name="password"]', process.env.TWITTER_PASSWORD || 'Willyjo@969');
-    await page.click('div[data-testid="LoginForm_Login_Button"]');
-
-    await page.waitForNavigation({ waitUntil: 'networkidle2' });
-
-    // GO TO TWEET & REPLY
     await page.goto(tweetUrl, { waitUntil: 'networkidle2' });
-
     await page.click('[data-testid="reply"]');
     await page.waitForSelector('div[role="textbox"]');
     await page.type('div[role="textbox"]', replyText);
@@ -44,4 +36,4 @@ app.post('/reply', async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('🚀 Server running on port 3000'));
+app.listen(3000, () => console.log('🚀 Bot running on port 3000'));
