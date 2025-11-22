@@ -1,39 +1,31 @@
-import express from 'express';
-import puppeteer from 'puppeteer-core';
-import { executablePath } from 'puppeteer';
+const puppeteer = require('puppeteer');
 
-const app = express();
-app.use(express.json());
-
-app.post('/reply', async (req, res) => {
-  const { tweetUrl, replyText } = req.body;
-  if (!tweetUrl || !replyText) return res.status(400).send("Missing data");
-
+(async () => {
   const browser = await puppeteer.launch({
     headless: true,
-    executablePath: executablePath(), // uses system Chrome
+    executablePath: '/usr/bin/google-chrome',
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
   const page = await browser.newPage();
+  await page.goto('https://x.com/login', { waitUntil: 'networkidle2' });
 
-  try {
-    await page.goto('https://twitter.com/login');
+  // Login logic (fill in your credentials or use environment variables)
+  await page.type('input[name="text"]', process.env.X_USERNAME, { delay: 100 });
+  await page.keyboard.press('Enter');
+  await page.waitForTimeout(2000);
 
-    // 🔐 Add your login automation here (or use cookies/session)
+  await page.type('input[name="password"]', process.env.X_PASSWORD, { delay: 100 });
+  await page.keyboard.press('Enter');
+  await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
-    await page.goto(tweetUrl, { waitUntil: 'networkidle2' });
-    await page.click('[data-testid="reply"]');
-    await page.waitForSelector('div[role="textbox"]');
-    await page.type('div[role="textbox"]', replyText);
-    await page.click('[data-testid="tweetButton"]');
+  // Post tweet
+  const tweetText = "This is a test tweet from a bot!";
+  await page.goto('https://x.com/compose/tweet');
+  await page.waitForSelector('[data-testid="tweetTextarea_0"]');
+  await page.type('[data-testid="tweetTextarea_0"]', tweetText, { delay: 50 });
+  await page.click('[data-testid="tweetButtonInline"]');
 
-    await browser.close();
-    res.send("✅ Replied successfully");
-  } catch (err) {
-    await browser.close();
-    res.status(500).send("❌ Failed: " + err.message);
-  }
-});
-
-app.listen(3000, () => console.log('🚀 Bot running on port 3000'));
+  console.log('Tweet posted!');
+  await browser.close();
+})();
