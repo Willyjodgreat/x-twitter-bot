@@ -1,8 +1,9 @@
 {
-  "name": "x-bot",
+  "name": "x-twitter-bot",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Twitter bot using puppeteer-core on Render",
   "type": "module",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
