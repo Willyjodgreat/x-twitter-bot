@@ -93,6 +93,7 @@ app.get('/', (req, res) => {
 
 // SERVER START
 app.listen(port, () => {
-  console.log(Bot listening on port ${port});
+  console.log(`Bot listening on port ${port}`);
 });
+
 
