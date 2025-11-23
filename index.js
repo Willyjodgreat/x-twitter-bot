@@ -68,7 +68,7 @@ async function replyToComment(commentId, replyText) {
 
   await browser.close();
 }
-[11/23, 10:23 AM] My Girlfriend 😍🥰🥰: app.post('/reply', async (req, res) => {
+ app.post('/reply', async (req, res) => {
   const { commentId, replyText } = req.body;
 
   if (!commentId || !replyText) {
