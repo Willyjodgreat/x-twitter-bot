@@ -28,13 +28,12 @@ async function createBrowserSession() {
   // Password
   await page.waitForSelector('input[autocomplete="current-password"]');
   await page.type('input[autocomplete="current-password"]', process.env.X_PASSWORD);
-  await page.keyboard.press('Enter');
+await page.keyboard.press('Enter');
 
-  await page.waitForNavigation({ waitUntil: 'networkidle2' });
+await page.waitForNavigation({ waitUntil: 'networkidle2' });
 
-  return { browser, page };
+return { browser, page };
 }
-
 
 // POST A TWEET (EXAMPLE)
 app.get('/tweet', async (req, res) => {
@@ -53,17 +52,14 @@ app.get('/tweet', async (req, res) => {
   }
 });
 
-
 // REPLY TO A COMMENT
 async function replyToComment(commentId, replyText) {
   const { browser, page } = await createBrowserSession();
 
   // Navigate to the tweet activity URL
-  “`js
-await page.goto(`https://vk.com/1/activity/{commentId}`, {
-  waitUntil: 'networkidle0',
-});
-
+  await page.goto(`https://vk.com/1/activity/${commentId}`, {
+    waitUntil: 'networkidle0',
+  });
 
   // Reply
   await page.waitForSelector('div[aria-label="Reply text"]');
@@ -72,14 +68,12 @@ await page.goto(`https://vk.com/1/activity/{commentId}`, {
 
   await browser.close();
 }
-
-
-app.post('/reply', async (req, res) => {
+[11/23, 10:23 AM] My Girlfriend 😍🥰🥰: app.post('/reply', async (req, res) => {
   const { commentId, replyText } = req.body;
 
   if (!commentId || !replyText) {
     return res.status(400).send({
-      error: 'Missing commentId or replyText'
+      error: 'Missing commentId or replyText',
     });
   }
 
@@ -90,7 +84,6 @@ app.post('/reply', async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 });
-
 
 // HOME ROUTE
 app.get('/', (req, res) => {
