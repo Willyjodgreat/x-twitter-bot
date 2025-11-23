@@ -10,23 +10,25 @@ const puppeteer = require('puppeteer-core');
   });
 
   const page = await browser.newPage();
-  await page.goto('https://x.com/login', { waitUntil: 'networkidle0' });
 
-  // Simulate typing login details (use env vars for safety)
-  await page.type('input[name="text"]', process.env.X_USERNAME);
-  await page.keyboard.press('Enter');
-  await page.waitForTimeout(1000);
-  await page.type('input[name="password"]', process.env.X_PASSWORD);
-  await page.keyboard.press('Enter');
+  // Go to X with longer timeout
+  await page.goto('https://x.com/login', {
+    waitUntil: 'networkidle0',
+    timeout: 0, // remove time limit
+  });
 
+  // Example login & post (replace with real selectors & values)
+  await page.type('input[name="text"]', 'your_username');
+  await page.click('div[role="button"]'); // next or login
+  await page.waitForTimeout(1000); // wait
+
+  await page.type('input[name="password"]', 'your_password');
+  await page.click('div[role="button"]'); // login button
   await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
-  // Compose tweet
-  await page.goto('https://x.com/compose/tweet');
-  await page.waitForSelector('[data-testid="tweetTextarea_0"]');
-  await page.type('[data-testid="tweetTextarea_0"]', 'Yo this is an automated tweet 🚀');
-  await page.click('[data-testid="tweetButtonInline"]');
+  await page.goto('https://x.com/compose/tweet', { waitUntil: 'networkidle0' });
+  await page.type('div[aria-label="Tweet text"]', 'Hello world from Puppeteer bot!');
+  await page.click('div[data-testid="tweetButtonInline"]');
 
-  console.log('✅ Tweet posted successfully!');
   await browser.close();
 })();
