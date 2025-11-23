@@ -28,7 +28,8 @@ require('dotenv').config();
 
   // Post a tweet
   await page.waitForSelector('div[aria-label="Tweet text"]', { timeout: 10000 });
-[ await page.type('div[aria-label="Tweet text"]', 'Test tweet by bot 🤖 #automated');
+  await page.type('div[aria-label="Tweet text"]', 'Test tweet by bot 🤖 #automated');
+
   await page.click('div[data-testid="tweetButtonInline"]');
 
   console.log('✅ Tweet posted!');
