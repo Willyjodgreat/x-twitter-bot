@@ -30,4 +30,11 @@ await page.type('div[aria-label="Tweet text"]', 'Automated post by bot 🤖');
 await page.click('div[data-testid="tweetButtonInline"]');
 
 console.log('Tweet posted!');
+const express = require('express');
+const app = express();
+
+const port = process.env.PORT || 3000;
+app.get('/', (req, res) => res.send('Bot is running 🚀'));
+app.listen(port, () => console.log(`Listening on port ${port}`));
+
 close();
