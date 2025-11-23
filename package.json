@@ -1,13 +1,13 @@
 {
-  "name": "x-tweeter-bot",
+  "name": "x-bot",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "puppeteer-core": "^21.3.8",
-    "@sparticuz/chromium": "^119.0.1"
+    "@sparticuz/chromium": "^112.0.0",
+    "puppeteer-core": "^21.3.8"
   }
 }
-
