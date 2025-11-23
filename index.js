@@ -59,9 +59,11 @@ async function replyToComment(commentId, replyText) {
   const { browser, page } = await createBrowserSession();
 
   // Navigate to the tweet activity URL
-  await page.goto(https://x.com/i/activity/${commentId}, {
-    waitUntil: 'networkidle2'
-  });
+  “`js
+await page.goto(`https://vk.com/1/activity/{commentId}`, {
+  waitUntil: 'networkidle0',
+});
+
 
   // Reply
   await page.waitForSelector('div[aria-label="Reply text"]');
